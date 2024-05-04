@@ -72,7 +72,7 @@
                 if ($result && $result->num_rows > 0) {
                     $row = $result->fetch_assoc();
                     $file_path = $row['file_upload'];
-                    $absolute_url = "https://ratingsjob.graymatterworks.com/" . $file_path; // Replace 'localhost/ratings_job/' with your actual directory path
+                    $absolute_url = "https://admin.ratingsjob.online/" . $file_path; // Replace 'localhost/ratings_job/' with your actual directory path
                     echo "<a href='$absolute_url' download><button class='btn btn-primary btn-custom' style='background-color:#fed346; color:white; font-weight:bold;'>Download App Now</button></a>";
                 } else {
                     echo "<p>No app file available for download.</p>";
