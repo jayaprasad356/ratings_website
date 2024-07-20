@@ -202,7 +202,7 @@ curl_close($curl);
                         </ul>
                     </li>
                     <li>
-                        <a href="#withdrawals" class="nav-link px-0 align-middle text-white">
+                        <a href="withdrawals.php" class="nav-link px-0 align-middle text-white">
                             <i class="fs-4 bi-cash"></i> <span class="ms-1 d-none d-sm-inline">Withdrawals</span> </a>
                     </li>
                     <li>
