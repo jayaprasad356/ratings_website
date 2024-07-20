@@ -3,9 +3,9 @@ session_start();
 ob_start();
 
 $servername = "localhost";
-$username = "u743445510_ratings_job";
-$password = "Ratingsjobs@2024";
-$database = "u743445510_ratings_job";
+$username = "u743445510_lifetimeads";
+$password = "Lifetimeads@2024";
+$database = "u743445510_lifetimeads";
 
 $conn = new mysqli($servername, $username, $password, $database);
 
@@ -19,24 +19,24 @@ function generateDeviceID()
 {
     return uniqid(); 
 }
+
 if (isset($_POST['btnSignup'])) {
     $mobile = $_POST["mobile"];
     $password = $_POST["password"];
-    $confirmPassword = $_POST["confirmPassword"]; // Define $confirmPassword here
+    $confirmPassword = $_POST["confirmPassword"];
     $name = $_POST["name"];
     $email = $_POST["email"];
     $city = $_POST["city"];
     $state = $_POST["state"];
     $age = $_POST["age"];
     $referred_by = $_POST["referred_by"];
-    $device_id = generateDeviceID(); // Generate a new device ID
+    $device_id = generateDeviceID();
 
     if ($password !== $confirmPassword) {
         echo "<script>alert('Password and Confirm Password do not match');</script>";
     } else {
-        // Proceed with registration process since passwords match
+        // Proceed with registration process
 
-        // Prepare data for API call
         $data = array(
             "mobile" => $mobile,
             "password" => $password,
@@ -49,59 +49,51 @@ if (isset($_POST['btnSignup'])) {
             "device_id" => $device_id,
         );
 
-        // API endpoint URL
-        $apiUrl = "https://ratingsjob.graymatterworks.com/api/register.php";
-
-        // Initialize cURL session
+        $apiUrl = "https://lifetimeads.graymatterworks.com/api/register.php";
         $curl = curl_init($apiUrl);
 
-        // Set cURL options
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 
-        // Execute cURL request
         $response = curl_exec($curl);
 
-        // Check for errors
         if ($response === false) {
-            // Error in cURL request
             echo "Error: " . curl_error($curl);
         } else {
-            // Successful API response
             $responseData = json_decode($response, true);
 
-            // Check if response is valid JSON
             if ($responseData === null) {
-                // Error decoding response
                 echo "Error decoding API response.";
             } else {
-                // Handle API response
                 if (isset($responseData["success"]) && $responseData["success"]) {
                     // Registration successful
-                    $_SESSION['id'] = $responseData["data"][0]['id'];
+                    $user_id = $responseData["data"][0]['id']; // Capture user_id from response
+                    $_SESSION['id'] = $user_id;
                     $_SESSION['codes'] = 0;
-                    header("Location: app.php"); // Redirect to app.php
+
+                    // Redirect without user_id in the URL
+                    header("Location: dashboard.php");
                     exit();
                 } else {
                     // Registration failed
                     $message = isset($responseData["message"]) ? $responseData["message"] : "Registration failed. Please try again.";
                     echo "<script>alert('$message');</script>";
 
-                    // If the user needs to register, redirect to the registration page
                     if (isset($responseData["register_required"]) && $responseData["register_required"]) {
-                        header("Location: index.php"); // Redirect to registration.php
+                        header("Location: index.php");
                         exit();
                     }
                 }
             }
         }
-        // Close cURL session
         curl_close($curl);
     }
 }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
