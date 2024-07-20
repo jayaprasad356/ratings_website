@@ -78,7 +78,11 @@ if (isset($_POST['btnWithdrawal'])) {
                 $_SESSION['balance'] = $responseData['balance'];
                 $balance = $_SESSION['balance'];
             }
-            echo "<script>alert('$message');</script>";
+            // Alert and redirect
+            echo "<script>
+                    alert('$message');
+                    window.location.href = 'withdrawals.php';
+                  </script>";
         } else {
             // Failed to fetch transaction details
             if ($responseData !== null) {
@@ -86,6 +90,7 @@ if (isset($_POST['btnWithdrawal'])) {
             }
         }
     }
+    
     curl_close($curl);
 }
 ?>
